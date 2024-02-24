@@ -1,15 +1,10 @@
 package spectacle.specto.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
-import spectacle.specto.dto.GoogleOAuthResponseDto;
 import spectacle.specto.service.OAuthService;
-
-import java.net.URI;
 
 
 @RestController
@@ -24,9 +19,16 @@ public class LoginController {
     }
 
     @GetMapping("/login/oauth2/code/google")
-    public ResponseEntity<GoogleOAuthResponseDto> getAccessCode (@RequestParam("code") String accessCode) {
-        return oAuthService.getAccessToken(accessCode);
+    public ResponseEntity<?> login (@RequestParam("code") String accessCode) {
+        return ResponseEntity.ok().body(oAuthService.getAccessToken(accessCode));
     }
 
+
+    @GetMapping("/test")
+    public ResponseEntity<?> testAPI () {
+        String text = "need header";
+        System.out.println(text);
+        return ResponseEntity.ok().body(text);
+    }
 }
 

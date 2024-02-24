@@ -1,5 +1,8 @@
 package spectacle.specto.service;
 
+import jakarta.transaction.Transactional;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Value;
@@ -8,14 +11,21 @@ import org.springframework.web.client.RestTemplate;
 import io.jsonwebtoken.impl.Base64UrlCodec;
 import java.nio.charset.StandardCharsets;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import spectacle.specto.domain.User;
 import spectacle.specto.dto.GoogleOAuthResponseDto;
+import spectacle.specto.dto.JwtDto;
 import spectacle.specto.dto.UserDataDto;
+import spectacle.specto.dto.UserDto;
+import spectacle.specto.jwt.JwtTokenUtil;
+import spectacle.specto.repository.UserRepository;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class OAuthService {
     private final String googleTokenUrl = "https://oauth2.googleapis.com/token";
 
@@ -28,13 +38,18 @@ public class OAuthService {
     @Value("${oauth2.client.google.redirect-uri}")
     private String redirectUrl;
 
+    @Value("${secret-key}")
+    private String secretKey;
+
+    private final UserRepository userRepository;
+
     public String loadToLogin() {
         String loginUrl = "https://accounts.google.com/o/oauth2/v2/auth?" + "client_id=" + clientId + "&redirect_uri=" + redirectUrl
                 + "&response_type=code&scope=profile%20email&access_type=offline";
         return loginUrl;
     }
 
-    public ResponseEntity<GoogleOAuthResponseDto> getAccessToken(String accessToken) {
+    public JwtDto getAccessToken(String accessToken) {
 
         RestTemplate restTemplate = new RestTemplate();
         Map<String, String> params = new HashMap<>();
@@ -49,7 +64,7 @@ public class OAuthService {
 
         Optional<UserDataDto> decodeInfo = decodeToken(responseEntity.getBody().getId_token().split("\\.")[1]);
 
-        return responseEntity;
+        return loginToService(decodeInfo.get().getName(), decodeInfo.get().getEmail());
     }
 
     public Optional<UserDataDto> decodeToken(String jwtToken) {
@@ -67,6 +82,24 @@ public class OAuthService {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public JwtDto loginToService(String name, String email) {
+        Optional<User> user = userRepository.findByEmail(email);
+
+        if (user.isEmpty()) { // 회원가입
+            UserDto userDto = new UserDto();
+            User signUpUser = userDto.toEntity(name, email);
+            userRepository.save(signUpUser);
+            return JwtTokenUtil.createToken(email, secretKey);
+        }
+        else { // 로그인
+            return JwtTokenUtil.createToken(email, secretKey);
+        }
+    }
+
+    public User getUserData (String email) {
+        return userRepository.findByEmail(email).orElseThrow();
     }
 
 }
