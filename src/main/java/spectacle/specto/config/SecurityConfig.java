@@ -1,5 +1,6 @@
 package spectacle.specto.config;
 
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,22 +10,22 @@ import org.springframework.security.config.annotation.web.configurers.CsrfConfig
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import spectacle.specto.jwt.JwtTokenFilter;
-import spectacle.specto.service.OAuthService;
 
 @EnableWebSecurity
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final OAuthService oAuthService;
+    private final JwtTokenFilter jwtTokenFilter;
 
     @Bean
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(CsrfConfigurer::disable)
-                .addFilterBefore(new JwtTokenFilter(oAuthService), UsernamePasswordAuthenticationFilter.class)
-                .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
-                        authorizationManagerRequestMatcherRegistry.requestMatchers("/login/**", "/swagger-ui/**", "/v3/**").permitAll()
+                .addFilterAt(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                .authorizeHttpRequests(authz -> authz
+                        .requestMatchers("/login/**", "/swagger-ui/**", "/v3/**").permitAll()
+                        .anyRequest().authenticated()
                 );
 
         return http.build();

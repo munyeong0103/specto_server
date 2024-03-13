@@ -3,7 +3,6 @@ package spectacle.specto.jwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Value;
 import spectacle.specto.dto.JwtDto;
 
 import java.util.Date;
@@ -17,7 +16,6 @@ public class JwtTokenUtil {
     // JWT Token 발급
     public static JwtDto createToken(String email, String key) {
         // Claim = Jwt Token에 들어갈 정보
-        // Claim에 loginId를 넣어 줌으로써 나중에 loginId를 꺼낼 수 있음
         Claims claims = Jwts.claims();
         claims.put("email", email);
 
@@ -36,6 +34,7 @@ public class JwtTokenUtil {
         System.out.println("==================");
         System.out.println("accessToken  :  " + accessToken);
         System.out.println("refreshToken :  " + refreshToken);
+        System.out.println("==================");
 
         return JwtDto.builder()
                 .grantType(BEARER_TYPE)

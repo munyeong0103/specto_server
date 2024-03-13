@@ -1,7 +1,6 @@
 package spectacle.specto.service;
 
 import jakarta.transaction.Transactional;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -38,17 +37,22 @@ public class OAuthService {
     @Value("${oauth2.client.google.redirect-uri}")
     private String redirectUrl;
 
-    @Value("${secret-key}")
+    @Value("${jwt.secret-key}")
     private String secretKey;
 
     private final UserRepository userRepository;
 
+    private String userName;
+    private String email;
+
+    // 구글 로그인 url로 redirction 시키는 메서드
     public String loadToLogin() {
         String loginUrl = "https://accounts.google.com/o/oauth2/v2/auth?" + "client_id=" + clientId + "&redirect_uri=" + redirectUrl
                 + "&response_type=code&scope=profile%20email&access_type=offline";
         return loginUrl;
     }
 
+    // 구글로그인을 통해 사용자의 정보를 가져오는 메서드
     public JwtDto getAccessToken(String accessToken) {
 
         RestTemplate restTemplate = new RestTemplate();
@@ -67,6 +71,7 @@ public class OAuthService {
         return loginToService(decodeInfo.get().getName(), decodeInfo.get().getEmail());
     }
 
+    // 구글로그인을 통해 얻은 토큰을 decode 하여 사용자의 정보를 저장할 수 있는 형태로 가공하는 메서드
     public Optional<UserDataDto> decodeToken(String jwtToken) {
         byte[] decode = new Base64UrlCodec().decode(jwtToken);
         String decode_data = new String(decode, StandardCharsets.UTF_8);
@@ -84,6 +89,7 @@ public class OAuthService {
         }
     }
 
+    // 서비스의 자체 회원가입,로그인을 진행하는 메서드
     public JwtDto loginToService(String name, String email) {
         Optional<User> user = userRepository.findByEmail(email);
 
@@ -96,10 +102,6 @@ public class OAuthService {
         else { // 로그인
             return JwtTokenUtil.createToken(email, secretKey);
         }
-    }
-
-    public User getUserData (String email) {
-        return userRepository.findByEmail(email).orElseThrow();
     }
 
 }
