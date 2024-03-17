@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access= AccessLevel.PROTECTED)
 @Getter
-public class GoogleOAuthResponseDto {
+public class OAuthResponseDto {
     private String access_token;
 
     private String expires_in;

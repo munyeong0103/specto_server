@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class UserDataDto {
+public class GoogleUserDataDto {
     private String name;
     private String email;
     private String iss;
