@@ -3,7 +3,7 @@ package spectacle.specto.jwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import spectacle.specto.dto.JwtDto;
+import spectacle.specto.dto.loginDto.JwtDto;
 
 import java.util.Date;
 

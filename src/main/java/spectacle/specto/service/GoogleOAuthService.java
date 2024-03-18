@@ -10,9 +10,9 @@ import org.springframework.web.client.RestTemplate;
 import io.jsonwebtoken.impl.Base64UrlCodec;
 import java.nio.charset.StandardCharsets;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import spectacle.specto.dto.OAuthResponseDto;
-import spectacle.specto.dto.JwtDto;
-import spectacle.specto.dto.GoogleUserDataDto;
+import spectacle.specto.dto.loginDto.OAuthResponseDto;
+import spectacle.specto.dto.loginDto.JwtDto;
+import spectacle.specto.dto.loginDto.GoogleUserDataDto;
 import spectacle.specto.repository.UserRepository;
 
 import java.util.HashMap;

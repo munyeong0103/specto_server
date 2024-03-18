@@ -1,4 +1,4 @@
-package spectacle.specto.dto;
+package spectacle.specto.dto.loginDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
