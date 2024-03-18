@@ -30,4 +30,8 @@ public class Internship {
     private String goal;
 
     private String project;
+
+    @ManyToOne
+    @JoinColumn(name = "spec_id", nullable = false)
+    private Spec spec;
 }

@@ -31,4 +31,8 @@ public class Project {
     private String goal;
 
     private String direction;
+
+    @ManyToOne
+    @JoinColumn(name = "spec_id", nullable = false)
+    private Spec spec;
 }

@@ -29,4 +29,8 @@ public class Certification {
     private byte[] documentation;
 
     private LocalDate date;
+
+    @ManyToOne
+    @JoinColumn(name = "spec_id", nullable = false)
+    private Spec spec;
 }

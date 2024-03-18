@@ -36,4 +36,8 @@ public class Review {
     private String impression;
 
     private String bearInMind;
+
+    @ManyToOne
+    @JoinColumn(name = "spec_id", nullable = false)
+    private Spec spec;
 }

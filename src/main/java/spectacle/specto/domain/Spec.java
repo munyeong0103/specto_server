@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import spectacle.specto.domain.enumType.Category;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "spec")
@@ -39,6 +41,25 @@ public class Spec {
     @Column
     private String summary;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
+    @OneToMany(mappedBy = "spec", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private final Set<Review> reviews = new HashSet<>();
 
+    @OneToMany(mappedBy = "spec", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private final Set<Contest> contests = new HashSet<>();
+
+    @OneToMany(mappedBy = "spec", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private final Set<Certification> certifications = new HashSet<>();
+
+    @OneToMany(mappedBy = "spec", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private final Set<Internship> internships = new HashSet<>();
+
+    @OneToMany(mappedBy = "spec", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private final Set<Activity> activities = new HashSet<>();
+
+    @OneToMany(mappedBy = "spec", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private final Set<Project> projects = new HashSet<>();
 }

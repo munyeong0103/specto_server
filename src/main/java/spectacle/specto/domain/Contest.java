@@ -34,5 +34,7 @@ public class Contest {
 
     private LocalDate date;
 
-
+    @ManyToOne
+    @JoinColumn(name = "spec_id", nullable = false)
+    private Spec spec;
 }
