@@ -28,9 +28,6 @@ public class Review {
     private LocalDate date;
 
     @Column(nullable = false)
-    private String contents;
-
-    @Column(nullable = false)
     private Integer views;
 
     private String impression;
