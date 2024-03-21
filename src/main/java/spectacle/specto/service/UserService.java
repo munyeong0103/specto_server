@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import spectacle.specto.domain.User;
-import spectacle.specto.dto.JwtDto;
+import spectacle.specto.dto.loginDto.JwtDto;
 import spectacle.specto.dto.UserDto;
 import spectacle.specto.jwt.JwtTokenUtil;
 import spectacle.specto.repository.UserRepository;

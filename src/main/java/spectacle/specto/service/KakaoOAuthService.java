@@ -13,9 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import spectacle.specto.dto.OAuthResponseDto;
-import spectacle.specto.dto.JwtDto;
-import spectacle.specto.dto.KakaoUserDataDto;
+import spectacle.specto.dto.loginDto.OAuthResponseDto;
+import spectacle.specto.dto.loginDto.JwtDto;
+import spectacle.specto.dto.loginDto.KakaoUserDataDto;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
