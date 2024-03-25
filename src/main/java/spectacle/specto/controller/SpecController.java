@@ -49,7 +49,8 @@ public class SpecController {
 
     @PostMapping("")
     public ResponseEntity<?> createSpec(@RequestBody SpecPostReq specPostReq) {
-        return ResponseEntity.ok(HttpStatus.OK);
+        Long specId = specService.createSpec(specPostReq);
+        return ResponseEntity.ok(specId);
     }
 
     @PutMapping("{specId}")

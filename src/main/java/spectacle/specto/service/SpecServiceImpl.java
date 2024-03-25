@@ -49,7 +49,40 @@ public class SpecServiceImpl implements SpecService{
 
     @Override
     public Long createSpec(SpecPostReq specPostReq) {
-        return null;
+        Spec spec = specPostReq.toEntity();
+        spec.setUser(userRepository.findById((long) 1).orElseThrow(() -> new NullPointerException()));
+        Spec newSpec = specRepository.save(spec);
+
+        Category category = specPostReq.getCategory();
+        Detail detail = specPostReq.getDetail();
+
+        switch (category) {
+            case ACTIVITY:
+                Activity activity = ((ActivityDetail) detail).toEntity();
+                activity.setSpec(newSpec);
+                activityRepository.save(activity);
+            case CERTIFICATION:
+                Certification certification = ((CertificationDetail) detail).toEntity();
+                certification.setSpec(newSpec);
+                certificationRepository.save(certification);
+            case CONTEST:
+                if (detail != null) {
+                    ContestDetail contestDetail = (ContestDetail) detail;
+                    Contest contest = contestDetail.toEntity();
+                    contest.setSpec(newSpec);
+                    contestRepository.save(contest);
+                }
+            case INTERNSHIP:
+                Internship internship = ((InternshipDetail) detail).toEntity();
+                internship.setSpec(newSpec);
+                internshipRepository.save(internship);
+            case PROJECT:
+                Project project = ((ProjectDetail) detail).toEntity();
+                project.setSpec(newSpec);
+                projectRepository.save(project);
+        }
+
+        return newSpec.getId();
     }
 
     private SpecRes specToSpecRes(Spec spec) {
