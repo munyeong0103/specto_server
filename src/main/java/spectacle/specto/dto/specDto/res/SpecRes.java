@@ -1,4 +1,4 @@
-package spectacle.specto.dto;
+package spectacle.specto.dto.specDto.res;
 
 import lombok.Builder;
 import lombok.Getter;
