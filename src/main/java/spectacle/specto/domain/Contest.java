@@ -1,9 +1,7 @@
 package spectacle.specto.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import spectacle.specto.domain.enumType.Field;
 
 import java.time.LocalDate;
@@ -11,6 +9,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "contest")
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Contest {
     @Id
@@ -28,7 +27,7 @@ public class Contest {
     @Column(length = 1000)
     private byte[] documentation;
 
-    private String awardStatus;
+    private Boolean awardStatus;
 
     private String awardTitle;
 
@@ -37,4 +36,14 @@ public class Contest {
     @ManyToOne
     @JoinColumn(name = "spec_id", nullable = false)
     private Spec spec;
+
+    @Builder
+    public Contest(String host, Field field, byte[] documentation, Boolean awardStatus, String awardTitle, LocalDate date) {
+        this.host = host;
+        this.field = field;
+        this.documentation = documentation;
+        this.awardStatus = awardStatus;
+        this.awardTitle = awardTitle;
+        this.date = date;
+    }
 }

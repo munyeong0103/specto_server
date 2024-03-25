@@ -1,9 +1,7 @@
 package spectacle.specto.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import spectacle.specto.domain.enumType.Field;
 
 import java.time.LocalDate;
@@ -11,6 +9,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "certification")
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Certification {
     @Id
@@ -33,4 +32,12 @@ public class Certification {
     @ManyToOne
     @JoinColumn(name = "spec_id", nullable = false)
     private Spec spec;
+
+    @Builder
+    public Certification(String host, Field field, byte[] documentation, LocalDate date) {
+        this.host = host;
+        this.field = field;
+        this.documentation = documentation;
+        this.date = date;
+    }
 }

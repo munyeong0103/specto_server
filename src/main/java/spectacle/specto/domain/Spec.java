@@ -1,9 +1,7 @@
 package spectacle.specto.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import spectacle.specto.domain.enumType.Category;
 
 import java.time.LocalDate;
@@ -13,6 +11,7 @@ import java.util.Set;
 @Entity
 @Table(name = "spec")
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Spec {
     @Id
@@ -42,7 +41,7 @@ public class Spec {
     private String summary;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private User user;
 
     @OneToMany(mappedBy = "spec", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
@@ -62,4 +61,17 @@ public class Spec {
 
     @OneToMany(mappedBy = "spec", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private final Set<Project> projects = new HashSet<>();
+
+    @Builder
+    public Spec(Category category, String name, LocalDate startDate, LocalDate endDate,
+                boolean completed, String contents, String summary, User user) {
+        this.category = category;
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.completed = completed;
+        this.contents = contents;
+        this.summary = summary;
+        this.user = user;
+    }
 }
