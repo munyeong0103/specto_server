@@ -1,13 +1,12 @@
 package spectacle.specto.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "internship")
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Internship {
     @Id
@@ -34,4 +33,14 @@ public class Internship {
     @ManyToOne
     @JoinColumn(name = "spec_id", nullable = false)
     private Spec spec;
+
+    @Builder
+    public Internship(String company, String work, byte[] documentation, String motivation, String goal, String project) {
+        this.company = company;
+        this.work = work;
+        this.documentation = documentation;
+        this.motivation = motivation;
+        this.goal = goal;
+        this.project = project;
+    }
 }
