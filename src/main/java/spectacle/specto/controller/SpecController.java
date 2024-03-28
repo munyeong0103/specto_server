@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import spectacle.specto.domain.enumType.Category;
 import spectacle.specto.dto.specDto.req.SpecPostReq;
@@ -49,8 +51,10 @@ public class SpecController {
 
     @PostMapping("")
     public ResponseEntity<?> createSpec(@RequestBody SpecPostReq specPostReq) {
-        Long specId = specService.createSpec(specPostReq);
-        return ResponseEntity.ok(specId);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userId = (String)authentication.getCredentials(); //email
+
+        return ResponseEntity.ok(specService.createSpec(userId, specPostReq));
     }
 
     @PutMapping("{specId}")

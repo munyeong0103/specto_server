@@ -2,6 +2,7 @@ package spectacle.specto.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import spectacle.specto.domain.enumType.Satisfaction;
@@ -37,4 +38,15 @@ public class Review {
     @ManyToOne
     @JoinColumn(name = "spec_id", nullable = false)
     private Spec spec;
+
+    @Builder
+    public Review(Spec spec, Satisfaction satisfaction, Integer progress, LocalDate date, String impression, String bearInMind, Integer views) {
+        this.spec = spec;
+        this.satisfaction = satisfaction;
+        this.progress = progress;
+        this.date = date;
+        this.impression = impression;
+        this.bearInMind = bearInMind;
+        this.views = views;
+    }
 }
