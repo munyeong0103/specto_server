@@ -7,6 +7,7 @@ import spectacle.specto.domain.Review;
 import spectacle.specto.domain.enumType.Category;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
