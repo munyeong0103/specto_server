@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import spectacle.specto.domain.Review;
+import spectacle.specto.domain.Spec;
 import spectacle.specto.domain.enumType.Category;
 
 import java.time.LocalDate;
@@ -18,6 +19,12 @@ public class ReviewRes {
     private Category category;
     private LocalDate date;
     private Long dPlusDay;
+
+    public static Review toEntity(Spec spec) {
+        return Review.builder()
+                .spec(spec)
+                .build();
+    }
 
     public static ReviewRes fromEntity(Review review) {
         return ReviewRes.builder()

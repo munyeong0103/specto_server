@@ -2,6 +2,10 @@ package spectacle.specto.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import spectacle.specto.domain.Review;
 import spectacle.specto.domain.Spec;
@@ -16,10 +20,9 @@ import spectacle.specto.repository.UserRepository;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @Transactional
@@ -84,6 +87,16 @@ public class ReviewServiceImpl implements ReviewService{
             progressAverage = 0;
         }
         return reviewProgresses;
+    }
+
+    @Override
+    public Slice<ReviewRes> getReviewBySpecSortedByRecent(long specId, int page) {
+        Spec spec = specRepository.findById(specId).orElseThrow();
+
+        Pageable pageable = PageRequest.of(page, 10, Sort.by("id").descending());
+        Slice<Review> reviews = reviewRepository.findBySpec(spec, pageable);
+
+        return reviews.map(ReviewRes::fromEntity);
     }
 }
 

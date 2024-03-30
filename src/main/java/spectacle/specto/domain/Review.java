@@ -49,4 +49,5 @@ public class Review {
         this.bearInMind = bearInMind;
         this.views = views;
     }
+
 }
