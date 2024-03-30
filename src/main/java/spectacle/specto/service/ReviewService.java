@@ -19,5 +19,5 @@ public interface ReviewService {
 
    Slice<ReviewRes> getReviewBySpecSortedByRecent(long specId, int page);
 
-
+   Slice<ReviewRes> getReviewBySpecSortedByOldest(long specId, int page);
 }

@@ -98,5 +98,15 @@ public class ReviewServiceImpl implements ReviewService{
 
         return reviews.map(ReviewRes::fromEntity);
     }
+
+    @Override
+    public Slice<ReviewRes> getReviewBySpecSortedByOldest(long specId, int page) {
+        Spec spec = specRepository.findById(specId).orElseThrow();
+
+        Pageable pageable = PageRequest.of(page, 10, Sort.by("id").ascending());
+        Slice<Review> reviews = reviewRepository.findBySpec(spec, pageable);
+
+        return reviews.map(ReviewRes::fromEntity);
+    }
 }
 

@@ -51,4 +51,9 @@ public class ReviewController {
         return ResponseEntity.ok().body(reviewService.getReviewBySpecSortedByRecent(specId, page).getContent());
     }
 
+    @GetMapping("/spec/oldest/{spec_id}")
+    public ResponseEntity<?> getReviewByOldest(@PathVariable("spec_id") Long specId, @RequestParam("page") int page){
+        return ResponseEntity.ok().body(reviewService.getReviewBySpecSortedByOldest(specId, page).getContent());
+    }
+
 }
