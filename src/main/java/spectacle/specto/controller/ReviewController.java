@@ -34,9 +34,13 @@ public class ReviewController {
     }
 
     @GetMapping("/calendar")
-    public ResponseEntity<?> getReviewByCalendarAndDate(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+    public ResponseEntity<?> getReviewByDate(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         return ResponseEntity.ok().body(reviewService.getReviewByCalendarAndDate(date));
     }
-    // dplusday 계산값 정리
+
+    @GetMapping("/calendar/progress")
+    public ResponseEntity<?> getReviewByProgress(@RequestParam("year") int year, @RequestParam("month") int month){
+        return ResponseEntity.ok().body(reviewService.getReviewByCalendarAndProgress(year, month));
+    }
 
 }
