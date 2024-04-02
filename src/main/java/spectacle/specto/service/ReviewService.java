@@ -1,13 +1,12 @@
 package spectacle.specto.service;
 
-import org.springframework.data.domain.Slice;
+import spectacle.specto.domain.Review;
 import spectacle.specto.dto.reviewDto.req.ReviewDto;
 import spectacle.specto.dto.reviewDto.res.ReviewProgress;
 import spectacle.specto.dto.reviewDto.res.ReviewRes;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Stream;
 
 
 public interface ReviewService {
@@ -17,7 +16,9 @@ public interface ReviewService {
 
    List<ReviewProgress> getReviewByCalendarAndProgress(int year, int month);
 
-   Slice<ReviewRes> getReviewBySpecSortedByRecent(long specId, int page);
+   List<ReviewRes> getReviewBySpecSortedByRecent(long specId);
 
-   Slice<ReviewRes> getReviewBySpecSortedByOldest(long specId, int page);
+   List<ReviewRes> getReviewBySpecSortedByOldest(long specId);
+
+   List<ReviewRes> getDPlusDay(List<Review> reviews);
 }

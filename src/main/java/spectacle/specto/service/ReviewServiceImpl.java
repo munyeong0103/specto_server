@@ -2,10 +2,6 @@ package spectacle.specto.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import spectacle.specto.domain.Review;
 import spectacle.specto.domain.Spec;
@@ -22,7 +18,6 @@ import java.time.YearMonth;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @Transactional
@@ -42,18 +37,8 @@ public class ReviewServiceImpl implements ReviewService{
     @Override
     public List<ReviewRes> getReviewByCalendarAndDate(LocalDate date){
         List<Review> reviews = reviewRepository.findByDate(date);
-        List<ReviewRes> reviewResList = new ArrayList<>();
 
-        for (Review review : reviews) {
-            ReviewRes reviewRes = ReviewRes.fromEntity(review);
-            //d-day 계산
-            LocalDate currentDate = LocalDate.now();
-            long betweenDays = ChronoUnit.DAYS.between(date, currentDate);
-            reviewRes.setDPlusDay(betweenDays);
-
-            reviewResList.add(reviewRes);
-        }
-        return reviewResList;
+        return getDPlusDay(reviews);
     }
 
     @Override
@@ -90,23 +75,38 @@ public class ReviewServiceImpl implements ReviewService{
     }
 
     @Override
-    public Slice<ReviewRes> getReviewBySpecSortedByRecent(long specId, int page) {
+    public List<ReviewRes> getReviewBySpecSortedByRecent(long specId) {
         Spec spec = specRepository.findById(specId).orElseThrow();
 
-        Pageable pageable = PageRequest.of(page, 10, Sort.by("id").descending());
-        Slice<Review> reviews = reviewRepository.findBySpec(spec, pageable);
+        List<Review> reviews = reviewRepository.findBySpecOrderByIdDesc(spec);
 
-        return reviews.map(ReviewRes::fromEntity);
+        return getDPlusDay(reviews);
+    }
+
+
+    @Override
+    public List<ReviewRes> getReviewBySpecSortedByOldest(long specId) {
+        Spec spec = specRepository.findById(specId).orElseThrow();
+
+        List<Review> reviews = reviewRepository.findBySpecOrderByIdAsc(spec);
+
+        return getDPlusDay(reviews);
     }
 
     @Override
-    public Slice<ReviewRes> getReviewBySpecSortedByOldest(long specId, int page) {
-        Spec spec = specRepository.findById(specId).orElseThrow();
+    public List<ReviewRes> getDPlusDay(List<Review> reviews) {
 
-        Pageable pageable = PageRequest.of(page, 10, Sort.by("id").ascending());
-        Slice<Review> reviews = reviewRepository.findBySpec(spec, pageable);
+        List<ReviewRes> reviewResList = new ArrayList<>();
 
-        return reviews.map(ReviewRes::fromEntity);
+        for (Review review : reviews) {
+            ReviewRes reviewRes = ReviewRes.fromEntity(review);
+            LocalDate currentDate = LocalDate.now();
+            long betweenDays = ChronoUnit.DAYS.between(review.getDate(), currentDate);
+            reviewRes.setDPlusDay(betweenDays);
+
+            reviewResList.add(reviewRes);
+        }
+        return reviewResList;
     }
 }
 

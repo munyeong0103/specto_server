@@ -2,22 +2,16 @@ package spectacle.specto.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cglib.core.Local;
-import org.springframework.data.domain.Slice;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import spectacle.specto.dto.reviewDto.req.ReviewDto;
-import spectacle.specto.dto.reviewDto.res.ReviewRes;
 import spectacle.specto.service.ReviewService;
 
-import java.awt.print.Pageable;
 import java.time.LocalDate;
-import java.time.YearMonth;
 
 @RequestMapping("/review")
 @RestController
@@ -47,13 +41,13 @@ public class ReviewController {
     }
 
     @GetMapping("/spec/recent/{spec_id}")
-    public ResponseEntity<?> getReviewByRecent(@PathVariable("spec_id") Long specId, @RequestParam("page") int page){
-        return ResponseEntity.ok().body(reviewService.getReviewBySpecSortedByRecent(specId, page).getContent());
+    public ResponseEntity<?> getReviewByRecent(@PathVariable("spec_id") Long specId){
+        return ResponseEntity.ok().body(reviewService.getReviewBySpecSortedByRecent(specId));
     }
 
     @GetMapping("/spec/oldest/{spec_id}")
-    public ResponseEntity<?> getReviewByOldest(@PathVariable("spec_id") Long specId, @RequestParam("page") int page){
-        return ResponseEntity.ok().body(reviewService.getReviewBySpecSortedByOldest(specId, page).getContent());
+    public ResponseEntity<?> getReviewByOldest(@PathVariable("spec_id") Long specId){
+        return ResponseEntity.ok().body(reviewService.getReviewBySpecSortedByOldest(specId));
     }
 
 }
