@@ -16,4 +16,6 @@ public interface ReviewRepository extends JpaRepository<Review, String> {
 
     List<Review> findBySpecOrderByIdDesc(Spec spec);
 
+    List<Review> findBySpecOrderByViewsDesc(Spec spec);
+
 }

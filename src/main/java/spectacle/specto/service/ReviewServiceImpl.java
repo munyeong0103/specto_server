@@ -38,7 +38,7 @@ public class ReviewServiceImpl implements ReviewService{
     public List<ReviewRes> getReviewByCalendarAndDate(LocalDate date){
         List<Review> reviews = reviewRepository.findByDate(date);
 
-        return getDPlusDay(reviews);
+        return addDPlusDay(reviews);
     }
 
     @Override
@@ -80,7 +80,7 @@ public class ReviewServiceImpl implements ReviewService{
 
         List<Review> reviews = reviewRepository.findBySpecOrderByIdDesc(spec);
 
-        return getDPlusDay(reviews);
+        return addDPlusDay(reviews);
     }
 
 
@@ -90,11 +90,20 @@ public class ReviewServiceImpl implements ReviewService{
 
         List<Review> reviews = reviewRepository.findBySpecOrderByIdAsc(spec);
 
-        return getDPlusDay(reviews);
+        return addDPlusDay(reviews);
     }
 
     @Override
-    public List<ReviewRes> getDPlusDay(List<Review> reviews) {
+    public List<ReviewRes> getReviewBySpecSortedByMostViews(long specId) {
+        Spec spec = specRepository.findById(specId).orElseThrow();
+
+        List<Review> reviews = reviewRepository.findBySpecOrderByViewsDesc(spec);
+
+        return addDPlusDay(reviews);
+    }
+
+    @Override
+    public List<ReviewRes> addDPlusDay(List<Review> reviews) {
 
         List<ReviewRes> reviewResList = new ArrayList<>();
 

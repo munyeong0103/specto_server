@@ -20,5 +20,7 @@ public interface ReviewService {
 
    List<ReviewRes> getReviewBySpecSortedByOldest(long specId);
 
-   List<ReviewRes> getDPlusDay(List<Review> reviews);
+   List<ReviewRes> getReviewBySpecSortedByMostViews(long specId);
+
+   List<ReviewRes> addDPlusDay(List<Review> reviews);
 }
