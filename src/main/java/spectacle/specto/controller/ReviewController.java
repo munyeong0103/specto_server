@@ -55,4 +55,9 @@ public class ReviewController {
         return ResponseEntity.ok().body(reviewService.getReviewBySpecSortedByMostViews(specId));
     }
 
+    @GetMapping("/{review_id}")
+    public ResponseEntity<?> getReviewDetail(@PathVariable("review_id") Long reviewId){
+        return ResponseEntity.ok().body(reviewService.getReviewDetail(reviewId));
+    }
+
 }

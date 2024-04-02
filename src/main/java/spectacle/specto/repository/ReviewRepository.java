@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-public interface ReviewRepository extends JpaRepository<Review, String> {
+public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findByDate(LocalDate date);
 
     List<Review> findBySpecOrderByIdAsc(Spec spec);

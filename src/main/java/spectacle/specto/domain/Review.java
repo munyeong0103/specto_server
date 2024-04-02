@@ -50,4 +50,8 @@ public class Review {
         this.views = views;
     }
 
+    public void updateViews(Integer views) {
+        this.views = views;
+    }
+
 }

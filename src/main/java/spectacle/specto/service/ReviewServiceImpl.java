@@ -7,6 +7,7 @@ import spectacle.specto.domain.Review;
 import spectacle.specto.domain.Spec;
 import spectacle.specto.domain.User;
 import spectacle.specto.dto.reviewDto.req.ReviewDto;
+import spectacle.specto.dto.reviewDto.res.ReviewDetail;
 import spectacle.specto.dto.reviewDto.res.ReviewProgress;
 import spectacle.specto.dto.reviewDto.res.ReviewRes;
 import spectacle.specto.repository.ReviewRepository;
@@ -100,6 +101,22 @@ public class ReviewServiceImpl implements ReviewService{
         List<Review> reviews = reviewRepository.findBySpecOrderByViewsDesc(spec);
 
         return addDPlusDay(reviews);
+    }
+
+    @Override
+    public ReviewDetail getReviewDetail(long reviewId) {
+        Review review = reviewRepository.findById(reviewId).orElseThrow();
+        //조회수 변경
+        review.updateViews(review.getViews()+1);
+        reviewRepository.save(review);
+
+        //d-day 설정
+        ReviewDetail reviewDetail = ReviewDetail.fromEntity(review);
+        LocalDate currentDate = LocalDate.now();
+        long betweenDays = ChronoUnit.DAYS.between(review.getDate(), currentDate);
+        reviewDetail.setDPlusDay(betweenDays);
+
+        return reviewDetail;
     }
 
     @Override

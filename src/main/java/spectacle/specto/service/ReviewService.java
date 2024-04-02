@@ -2,6 +2,7 @@ package spectacle.specto.service;
 
 import spectacle.specto.domain.Review;
 import spectacle.specto.dto.reviewDto.req.ReviewDto;
+import spectacle.specto.dto.reviewDto.res.ReviewDetail;
 import spectacle.specto.dto.reviewDto.res.ReviewProgress;
 import spectacle.specto.dto.reviewDto.res.ReviewRes;
 
@@ -21,6 +22,8 @@ public interface ReviewService {
    List<ReviewRes> getReviewBySpecSortedByOldest(long specId);
 
    List<ReviewRes> getReviewBySpecSortedByMostViews(long specId);
+
+   ReviewDetail getReviewDetail(long reviewId);
 
    List<ReviewRes> addDPlusDay(List<Review> reviews);
 }
