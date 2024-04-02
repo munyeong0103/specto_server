@@ -28,5 +28,7 @@ public interface ReviewService {
 
    boolean updateReview(UpdateReviewReq updateReviewReq, long reviewId);
 
+   boolean deleteReview(long reviewId);
+
    List<ReviewRes> addDPlusDay(List<Review> reviews);
 }

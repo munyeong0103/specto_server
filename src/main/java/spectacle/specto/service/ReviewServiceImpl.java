@@ -130,6 +130,14 @@ public class ReviewServiceImpl implements ReviewService{
     }
 
     @Override
+    public boolean deleteReview(long reviewId) {
+
+        Review review = reviewRepository.findById(reviewId).orElseThrow();
+        reviewRepository.deleteById(reviewId);
+        return true;
+    }
+
+    @Override
     public List<ReviewRes> addDPlusDay(List<Review> reviews) {
 
         List<ReviewRes> reviewResList = new ArrayList<>();
