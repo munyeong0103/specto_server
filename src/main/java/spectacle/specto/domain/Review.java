@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import spectacle.specto.domain.enumType.Satisfaction;
+import spectacle.specto.dto.reviewDto.req.UpdateReviewReq;
 
 import java.time.LocalDate;
 
@@ -52,6 +53,16 @@ public class Review {
 
     public void updateViews(Integer views) {
         this.views = views;
+    }
+
+    public boolean updateReview(UpdateReviewReq updateReviewReq) {
+        this.satisfaction = updateReviewReq.getSatisfaction();
+        this.progress = updateReviewReq.getProgress();
+        this.impression = updateReviewReq.getImpression();
+        this.bearInMind = updateReviewReq.getBearInMind();
+        this.spec.setCompleted(updateReviewReq.isCompleted());
+
+        return true;
     }
 
 }

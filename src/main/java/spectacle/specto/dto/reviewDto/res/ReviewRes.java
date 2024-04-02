@@ -20,12 +20,6 @@ public class ReviewRes {
     private LocalDate date;
     private Long dPlusDay;
 
-    public static Review toEntity(Spec spec) {
-        return Review.builder()
-                .spec(spec)
-                .build();
-    }
-
     public static ReviewRes fromEntity(Review review) {
         return ReviewRes.builder()
                 .reviewId(review.getId())

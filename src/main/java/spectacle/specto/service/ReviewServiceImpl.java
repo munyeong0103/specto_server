@@ -6,7 +6,8 @@ import org.springframework.stereotype.Service;
 import spectacle.specto.domain.Review;
 import spectacle.specto.domain.Spec;
 import spectacle.specto.domain.User;
-import spectacle.specto.dto.reviewDto.req.ReviewDto;
+import spectacle.specto.dto.reviewDto.req.PostReviewReq;
+import spectacle.specto.dto.reviewDto.req.UpdateReviewReq;
 import spectacle.specto.dto.reviewDto.res.ReviewDetail;
 import spectacle.specto.dto.reviewDto.res.ReviewProgress;
 import spectacle.specto.dto.reviewDto.res.ReviewRes;
@@ -29,10 +30,10 @@ public class ReviewServiceImpl implements ReviewService{
     private final SpecRepository specRepository;
 
     @Override
-    public void postReview(ReviewDto reviewDto, String user_id) {
+    public void postReview(PostReviewReq postReviewReq, String user_id) {
         Optional<User> user = userRepository.findByEmail(user_id);
-        Spec spec = specRepository.findById(reviewDto.getSpecId()).orElseThrow();
-        Review review = reviewRepository.save(reviewDto.toEntity(reviewDto, spec));
+        Spec spec = specRepository.findById(postReviewReq.getSpecId()).orElseThrow();
+        Review review = reviewRepository.save(postReviewReq.toEntity(postReviewReq, spec));
     }
 
     @Override
@@ -117,6 +118,15 @@ public class ReviewServiceImpl implements ReviewService{
         reviewDetail.setDPlusDay(betweenDays);
 
         return reviewDetail;
+    }
+
+    @Override
+    public boolean updateReview(UpdateReviewReq updateReviewReq, long reviewId) {
+        Review review = reviewRepository.findById(reviewId).orElseThrow();
+        boolean updated = review.updateReview(updateReviewReq);
+
+        if (updated) {  return true;    }
+        else {  return false;   }
     }
 
     @Override
