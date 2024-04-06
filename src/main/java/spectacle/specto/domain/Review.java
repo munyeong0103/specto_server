@@ -60,7 +60,6 @@ public class Review {
         this.progress = updateReviewReq.getProgress();
         this.impression = updateReviewReq.getImpression();
         this.bearInMind = updateReviewReq.getBearInMind();
-        this.spec.setCompleted(updateReviewReq.isCompleted());
 
         return true;
     }

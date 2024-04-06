@@ -26,9 +26,9 @@ public class ReviewController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = (String)authentication.getCredentials(); //email
 
-        reviewService.postReview(postReviewReq, userId);
+        String message = reviewService.postReview(postReviewReq, userId);
 
-        return ResponseEntity.ok(HttpStatus.OK);
+        return ResponseEntity.ok(message);
     }
 
     @GetMapping("/calendar")

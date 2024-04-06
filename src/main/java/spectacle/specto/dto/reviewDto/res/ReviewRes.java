@@ -17,6 +17,9 @@ public class ReviewRes {
     private Long specId;
     private String specName;
     private Category category;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private boolean completed;
     private LocalDate date;
     private Long dPlusDay;
 
@@ -26,6 +29,9 @@ public class ReviewRes {
                 .specId(review.getSpec().getId())
                 .specName(review.getSpec().getName())
                 .category(review.getSpec().getCategory())
+                .startDate(review.getSpec().getStartDate())
+                .endDate(review.getSpec().getEndDate())
+                .completed(review.getSpec().isCompleted())
                 .date(review.getDate())
                 .build();
     }

@@ -1,6 +1,7 @@
 package spectacle.specto.service;
 
 import spectacle.specto.domain.Review;
+import spectacle.specto.domain.Spec;
 import spectacle.specto.dto.reviewDto.req.PostReviewReq;
 import spectacle.specto.dto.reviewDto.req.UpdateReviewReq;
 import spectacle.specto.dto.reviewDto.res.ReviewDetail;
@@ -12,7 +13,7 @@ import java.util.List;
 
 
 public interface ReviewService {
-   void postReview(PostReviewReq postReviewReq, String user_id);
+   String postReview(PostReviewReq postReviewReq, String user_id);
 
    List<ReviewRes> getReviewByCalendarAndDate(LocalDate date);
 
@@ -31,4 +32,6 @@ public interface ReviewService {
    boolean deleteReview(long reviewId);
 
    List<ReviewRes> addDPlusDay(List<Review> reviews);
+
+   List<Review> isCompleted(List<Review> reviews, Spec spec);
 }

@@ -30,10 +30,17 @@ public class ReviewServiceImpl implements ReviewService{
     private final SpecRepository specRepository;
 
     @Override
-    public void postReview(PostReviewReq postReviewReq, String user_id) {
+    public String postReview(PostReviewReq postReviewReq, String user_id) {
         Optional<User> user = userRepository.findByEmail(user_id);
         Spec spec = specRepository.findById(postReviewReq.getSpecId()).orElseThrow();
-        Review review = reviewRepository.save(postReviewReq.toEntity(postReviewReq, spec));
+
+        if (postReviewReq.getDate().isBefore(spec.getStartDate()) || postReviewReq.getDate().isAfter(spec.getEndDate())) {
+            return ("등록한 스펙 기간 사이에 회고를 추가해주세요");
+        }
+        else {
+            Review review = reviewRepository.save(postReviewReq.toEntity(postReviewReq, spec));
+            return ("회고가 등록되었습니다");
+        }
     }
 
     @Override
@@ -81,6 +88,7 @@ public class ReviewServiceImpl implements ReviewService{
         Spec spec = specRepository.findById(specId).orElseThrow();
 
         List<Review> reviews = reviewRepository.findBySpecOrderByIdDesc(spec);
+        isCompleted(reviews, spec);
 
         return addDPlusDay(reviews);
     }
@@ -91,6 +99,7 @@ public class ReviewServiceImpl implements ReviewService{
         Spec spec = specRepository.findById(specId).orElseThrow();
 
         List<Review> reviews = reviewRepository.findBySpecOrderByIdAsc(spec);
+        isCompleted(reviews, spec);
 
         return addDPlusDay(reviews);
     }
@@ -100,6 +109,7 @@ public class ReviewServiceImpl implements ReviewService{
         Spec spec = specRepository.findById(specId).orElseThrow();
 
         List<Review> reviews = reviewRepository.findBySpecOrderByViewsDesc(spec);
+        isCompleted(reviews, spec);
 
         return addDPlusDay(reviews);
     }
@@ -131,11 +141,11 @@ public class ReviewServiceImpl implements ReviewService{
 
     @Override
     public boolean deleteReview(long reviewId) {
-
         Review review = reviewRepository.findById(reviewId).orElseThrow();
         reviewRepository.deleteById(reviewId);
         return true;
     }
+
 
     @Override
     public List<ReviewRes> addDPlusDay(List<Review> reviews) {
@@ -144,13 +154,24 @@ public class ReviewServiceImpl implements ReviewService{
 
         for (Review review : reviews) {
             ReviewRes reviewRes = ReviewRes.fromEntity(review);
-            LocalDate currentDate = LocalDate.now();
-            long betweenDays = ChronoUnit.DAYS.between(review.getDate(), currentDate);
+            long betweenDays = ChronoUnit.DAYS.between(review.getSpec().getStartDate(), review.getDate());
             reviewRes.setDPlusDay(betweenDays);
 
             reviewResList.add(reviewRes);
         }
         return reviewResList;
+    }
+
+    @Override
+    public List<Review> isCompleted(List<Review> reviews, Spec spec) {
+        for (Review review : reviews) {
+            LocalDate currentDate = LocalDate.now();
+            boolean isCompleted = false;
+            if (review.getSpec().getEndDate().isBefore(currentDate)) {  isCompleted = true; }
+
+            spec.setCompleted(isCompleted);
+        }
+        return reviews;
     }
 }
 

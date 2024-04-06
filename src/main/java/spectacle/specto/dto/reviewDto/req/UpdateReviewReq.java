@@ -21,6 +21,4 @@ public class UpdateReviewReq {
     private String impression;
 
     private String bearInMind;
-
-    private boolean completed;
 }
