@@ -6,4 +6,5 @@ import spectacle.specto.domain.Project;
 
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long> {
+    Project findProjectBySpecId(Long specId);
 }

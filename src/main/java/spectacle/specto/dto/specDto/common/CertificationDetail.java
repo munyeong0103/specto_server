@@ -1,5 +1,6 @@
-package spectacle.specto.dto.specDto.req;
+package spectacle.specto.dto.specDto.common;
 
+import lombok.Builder;
 import lombok.Getter;
 import spectacle.specto.domain.Certification;
 import spectacle.specto.domain.enumType.Field;
@@ -19,5 +20,12 @@ public class CertificationDetail extends Detail {
                 .date(date)
                 .documentation(super.getDocumentation())
                 .build();
+    }
+
+    @Builder
+    public CertificationDetail(String host, Field field, LocalDate date) {
+        this.host = host;
+        this.field = field;
+        this.date = date;
     }
 }

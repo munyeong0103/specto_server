@@ -1,5 +1,6 @@
-package spectacle.specto.dto.specDto.req;
+package spectacle.specto.dto.specDto.common;
 
+import lombok.Builder;
 import lombok.Getter;
 import spectacle.specto.domain.Internship;
 
@@ -19,5 +20,14 @@ public class InternshipDetail extends Detail {
                 .project(project)
                 .documentation(super.getDocumentation())
                 .build();
+    }
+
+    @Builder
+    public InternshipDetail(String company, String work, String motivation, String goal, String project) {
+        this.company = company;
+        this.work = work;
+        this.motivation = motivation;
+        this.goal = goal;
+        this.project = project;
     }
 }

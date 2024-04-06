@@ -2,6 +2,7 @@ package spectacle.specto.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import spectacle.specto.dto.specDto.common.InternshipDetail;
 
 @Entity
 @Table(name = "internship")
@@ -42,5 +43,13 @@ public class Internship {
         this.motivation = motivation;
         this.goal = goal;
         this.project = project;
+    }
+
+    public void internshipPrivateUpdate(InternshipDetail detail) {
+        this.company = detail.getCompany();
+        this.work = detail.getWork();
+        this.motivation = detail.getMotivation();
+        this.goal = detail.getGoal();
+        this.project = detail.getProject();
     }
 }

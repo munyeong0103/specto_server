@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import spectacle.specto.domain.enumType.Category;
 import spectacle.specto.dto.specDto.req.SpecPostReq;
+import spectacle.specto.dto.specDto.req.SpecUpdateReq;
+import spectacle.specto.dto.specDto.res.SpecDetailRes;
 import spectacle.specto.dto.specDto.res.SpecRes;
 import spectacle.specto.service.SpecService;
 
@@ -43,8 +45,8 @@ public class SpecController {
     // 스펙 상세 조회
     @GetMapping("/{specId}")
     public ResponseEntity<?> getSpecDetail(@PathVariable Long specId, @RequestParam Category category, Pageable pageable) {
-
-        return ResponseEntity.ok(HttpStatus.OK);
+        SpecDetailRes specDetailRes = specService.getSpecDetail(specId, pageable);
+        return ResponseEntity.ok(specDetailRes);
     }
 
     @PostMapping("")
@@ -54,9 +56,9 @@ public class SpecController {
     }
 
     @PutMapping("{specId}")
-    public ResponseEntity<?> updateSpecInfo(@PathVariable Long specId ,@RequestBody SpecPostReq specPostReq) {
-
-        return ResponseEntity.ok(HttpStatus.OK);
+    public ResponseEntity<?> updateSpecInfo(@PathVariable Long specId ,@RequestBody SpecUpdateReq specUpdateReq) {
+        Long id = specService.updateSpec(specId, specUpdateReq);
+        return ResponseEntity.ok("spec " + id + "수정 성공");
     }
 
     @DeleteMapping("{specId}")

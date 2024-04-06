@@ -6,4 +6,5 @@ import spectacle.specto.domain.Internship;
 
 @Repository
 public interface InternshipRepository extends JpaRepository<Internship, Long> {
+    Internship findInternshipBySpecId(Long specId);
 }

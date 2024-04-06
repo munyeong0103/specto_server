@@ -3,6 +3,7 @@ package spectacle.specto.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import spectacle.specto.domain.enumType.Category;
+import spectacle.specto.dto.specDto.req.SpecUpdateReq;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -73,5 +74,12 @@ public class Spec {
         this.contents = contents;
         this.summary = summary;
         this.user = user;
+    }
+
+    public void SpecPrivateUpdate(SpecUpdateReq dto) {
+        this.name = dto.getName();
+        this.startDate = dto.getStartDate();
+        this.endDate = dto.getEndDate();
+        this.contents = dto.getContents();
     }
 }
