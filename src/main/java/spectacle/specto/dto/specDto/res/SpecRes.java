@@ -10,10 +10,10 @@ import java.time.LocalDate;
 @Setter
 @Builder
 public class SpecRes {
-    Long specId;
-    String name;
-    String category;
-    LocalDate startDate;
-    LocalDate endDate;
-    boolean completed;
+    private Long specId;
+    private String name;
+    private String category;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private boolean completed;
 }

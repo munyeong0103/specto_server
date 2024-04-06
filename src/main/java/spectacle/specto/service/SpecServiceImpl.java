@@ -1,10 +1,12 @@
 package spectacle.specto.service;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.http11.filters.IdentityInputFilter;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import spectacle.specto.domain.*;
 import spectacle.specto.domain.enumType.Category;
+import spectacle.specto.dto.specDto.common.*;
 import spectacle.specto.dto.specDto.req.*;
 import spectacle.specto.dto.specDto.res.SpecDetailRes;
 import spectacle.specto.dto.specDto.res.SpecRes;
@@ -22,8 +24,8 @@ public class SpecServiceImpl implements SpecService{
     private final ContestRepository contestRepository;
     private final InternshipRepository internshipRepository;
     private final ProjectRepository projectRepository;
-
     private final UserRepository userRepository;
+    private final UserService userService;
 
     @Override
     public List<SpecRes> getSpecByRecent(Category category, Pageable pageable) {
@@ -43,14 +45,76 @@ public class SpecServiceImpl implements SpecService{
     }
 
     @Override
-    public SpecDetailRes getSpecDetail(Long specId, Category category, Pageable pageable) {
-        return null;
+    public SpecDetailRes getSpecDetail(Long specId, Pageable pageable) {
+        Spec spec = this.findSpecBySpecId(specId);
+        Category category = spec.getCategory();
+        Detail detail = new Detail();
+
+        switch (category) {
+            case ACTIVITY:
+                Activity activity = activityRepository.findActivityBySpecId(specId);
+                detail = ActivityDetail.builder()
+                        .host(activity.getHost())
+                        .field(activity.getField())
+                        .motivation(activity.getMotivation())
+                        .goal(activity.getGoal())
+                        .direction(activity.getDirection())
+                        .build();
+            case CERTIFICATION:
+                Certification certification = certificationRepository.findCertificationBySpecId(specId);
+                detail = CertificationDetail.builder()
+                        .host(certification.getHost())
+                        .field(certification.getField())
+                        .date(certification.getDate())
+                        .build();
+            case CONTEST:
+                Contest contest = contestRepository.findContestBySpecId(specId);
+                detail = ContestDetail.builder()
+                        .host(contest.getHost())
+                        .field(contest.getField())
+                        .awardStatus(contest.getAwardStatus())
+                        .awardTitle(contest.getAwardTitle())
+                        .date(contest.getDate())
+                        .build();
+            case INTERNSHIP:
+                Internship internship = internshipRepository.findInternshipBySpecId(specId);
+                detail = InternshipDetail.builder()
+                        .company(internship.getCompany())
+                        .work(internship.getWork())
+                        .motivation(internship.getMotivation())
+                        .goal(internship.getGoal())
+                        .project(internship.getProject())
+                        .build();
+            case PROJECT:
+                Project project = projectRepository.findProjectBySpecId(specId);
+                detail = ProjectDetail.builder()
+                        .host(project.getHost())
+                        .field(project.getField())
+                        .motivation(project.getMotivation())
+                        .goal(project.getGoal())
+                        .direction(project.getDirection())
+                        .build();
+        }
+
+        return SpecDetailRes.builder()
+                .name(spec.getName())
+                .category(spec.getCategory().toString())
+                .startDate(spec.getStartDate())
+                .endDate(spec.getEndDate())
+                .completed(spec.isCompleted())
+                .contents(spec.getContents())
+                .summary(spec.getSummary())
+                .detail(detail)
+                .build();
+
     }
 
     @Override
     public Long createSpec(SpecPostReq specPostReq) {
+        User user = userService.getUser();
+
         Spec spec = specPostReq.toEntity();
-        spec.setUser(userRepository.findById((long) 1).orElseThrow(() -> new NullPointerException()));
+        spec.setUser(user);
         Spec newSpec = specRepository.save(spec);
 
         Category category = specPostReq.getCategory();
@@ -66,12 +130,9 @@ public class SpecServiceImpl implements SpecService{
                 certification.setSpec(newSpec);
                 certificationRepository.save(certification);
             case CONTEST:
-                if (detail != null) {
-                    ContestDetail contestDetail = (ContestDetail) detail;
-                    Contest contest = contestDetail.toEntity();
-                    contest.setSpec(newSpec);
-                    contestRepository.save(contest);
-                }
+                Contest contest = ((ContestDetail) detail).toEntity();
+                contest.setSpec(newSpec);
+                contestRepository.save(contest);
             case INTERNSHIP:
                 Internship internship = ((InternshipDetail) detail).toEntity();
                 internship.setSpec(newSpec);
@@ -85,6 +146,16 @@ public class SpecServiceImpl implements SpecService{
         return newSpec.getId();
     }
 
+    @Override
+    public Long updateSpec(Long specId, SpecUpdateReq specUpdateReq) {
+        return null;
+    }
+
+    @Override
+    public void deleteSpec(Long specId) {
+        return;
+    }
+
     private SpecRes specToSpecRes(Spec spec) {
         return SpecRes.builder()
                 .specId(spec.getId())
@@ -94,5 +165,10 @@ public class SpecServiceImpl implements SpecService{
                 .endDate(spec.getEndDate())
                 .completed(spec.isCompleted())
                 .build();
+    }
+
+    private Spec findSpecBySpecId(Long specId) {
+        return specRepository.findById(specId)
+                .orElseThrow(() -> new RuntimeException("WRONG_SPEC_ID"));
     }
 }
