@@ -1,7 +1,6 @@
 package spectacle.specto.service;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.http11.filters.IdentityInputFilter;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import spectacle.specto.domain.*;
@@ -183,8 +182,29 @@ public class SpecServiceImpl implements SpecService{
 
     @Override
     public void deleteSpec(Long specId) {
+        User user = userService.getUser();
+        Spec spec = this.findSpecBySpecId(specId);
 
-        return;
+        if (!user.getId().equals(spec.getUser().getId())) {
+            throw new RuntimeException("해당 스펙의 삭제 권한이 없는 사용자입니다.");
+        }
+
+        Category category = spec.getCategory();
+
+        switch (category) {
+            case ACTIVITY:
+                activityRepository.delete(activityRepository.findActivityBySpecId(specId));
+            case CERTIFICATION:
+                certificationRepository.delete(certificationRepository.findCertificationBySpecId(specId));
+            case CONTEST:
+                contestRepository.delete(contestRepository.findContestBySpecId(specId));
+            case INTERNSHIP:
+                internshipRepository.delete(internshipRepository.findInternshipBySpecId(specId));
+            case PROJECT:
+                projectRepository.delete(projectRepository.findProjectBySpecId(specId));
+        }
+
+        specRepository.deleteById(specId);
     }
 
     private SpecRes specToSpecRes(Spec spec) {

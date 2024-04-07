@@ -63,7 +63,7 @@ public class SpecController {
 
     @DeleteMapping("{specId}")
     public ResponseEntity<?> deleteSpec(@PathVariable Long specId) {
-
+        specService.deleteSpec(specId);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
