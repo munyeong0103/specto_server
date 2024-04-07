@@ -22,9 +22,7 @@ public class Activity {
     @Column(nullable = false)
     private Field field;
 
-    @Lob
-    @Column(nullable = false, length = 1000)
-    private byte[] documentation;
+    private String documentation;
 
     private String motivation;
 
@@ -37,7 +35,7 @@ public class Activity {
     private Spec spec;
 
     @Builder
-    public Activity(String host, Field field, byte[] documentation, String motivation, String goal, String direction) {
+    public Activity(String host, Field field, String documentation, String motivation, String goal, String direction) {
         this.host = host;
         this.field = field;
         this.documentation = documentation;

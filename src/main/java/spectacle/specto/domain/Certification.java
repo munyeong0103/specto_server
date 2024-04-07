@@ -24,9 +24,7 @@ public class Certification {
     @Column(nullable = false)
     private Field field;
 
-    @Lob
-    @Column(length = 1000)
-    private byte[] documentation;
+    private String documentation;
 
     private LocalDate date;
 
@@ -35,7 +33,7 @@ public class Certification {
     private Spec spec;
 
     @Builder
-    public Certification(String host, Field field, byte[] documentation, LocalDate date) {
+    public Certification(String host, Field field, String documentation, LocalDate date) {
         this.host = host;
         this.field = field;
         this.documentation = documentation;

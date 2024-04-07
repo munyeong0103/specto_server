@@ -24,9 +24,7 @@ public class Contest {
     @Column(nullable = false)
     private Field field;
 
-    @Lob
-    @Column(length = 1000)
-    private byte[] documentation;
+    private String documentation;
 
     private Boolean awardStatus;
 
@@ -39,7 +37,7 @@ public class Contest {
     private Spec spec;
 
     @Builder
-    public Contest(String host, Field field, byte[] documentation, Boolean awardStatus, String awardTitle, LocalDate date) {
+    public Contest(String host, Field field, String documentation, Boolean awardStatus, String awardTitle, LocalDate date) {
         this.host = host;
         this.field = field;
         this.documentation = documentation;
