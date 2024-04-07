@@ -44,7 +44,7 @@ public class SpecController {
 
     // 스펙 상세 조회
     @GetMapping("/{specId}")
-    public ResponseEntity<?> getSpecDetail(@PathVariable Long specId, @RequestParam Category category, Pageable pageable) {
+    public ResponseEntity<?> getSpecDetail(@PathVariable Long specId, Pageable pageable) {
         SpecDetailRes specDetailRes = specService.getSpecDetail(specId, pageable);
         return ResponseEntity.ok(specDetailRes);
     }
