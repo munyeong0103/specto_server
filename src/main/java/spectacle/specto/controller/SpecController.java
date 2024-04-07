@@ -38,8 +38,8 @@ public class SpecController {
     // 스펙 조회 - 조회순 정렬
     @GetMapping("/most-reviewed")
     public ResponseEntity<?> getSpecByMostViewed(@RequestParam Category category, Pageable pageable) {
-
-        return ResponseEntity.ok(HttpStatus.OK);
+        List<SpecRes> specByMostViewed = specService.getSpecByMostViewed(category, pageable);
+        return ResponseEntity.ok(specByMostViewed);
     }
 
     // 스펙 상세 조회
@@ -49,23 +49,25 @@ public class SpecController {
         return ResponseEntity.ok(specDetailRes);
     }
 
+    // 스펙 생성
     @PostMapping("")
     public ResponseEntity<?> createSpec(@RequestBody SpecPostReq specPostReq) {
         Long specId = specService.createSpec(specPostReq);
         return ResponseEntity.ok(specId);
     }
 
+    // 스펙 수정
     @PutMapping("{specId}")
     public ResponseEntity<?> updateSpecInfo(@PathVariable Long specId ,@RequestBody SpecUpdateReq specUpdateReq) {
         Long id = specService.updateSpec(specId, specUpdateReq);
         return ResponseEntity.ok("spec " + id + "수정 성공");
     }
 
+    // 스펙 삭제
     @DeleteMapping("{specId}")
     public ResponseEntity<?> deleteSpec(@PathVariable Long specId) {
         specService.deleteSpec(specId);
         return ResponseEntity.ok(HttpStatus.OK);
     }
-
 
 }

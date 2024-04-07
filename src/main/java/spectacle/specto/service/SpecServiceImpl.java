@@ -40,7 +40,8 @@ public class SpecServiceImpl implements SpecService{
 
     @Override
     public List<SpecRes> getSpecByMostViewed(Category category, Pageable pageable) {
-        return null;
+        List<Spec> specList = specRepository.findSpecByMostViewed(category, pageable);
+        return specList.stream().map(this::specToSpecRes).toList();
     }
 
     @Override
