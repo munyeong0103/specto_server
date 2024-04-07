@@ -32,6 +32,4 @@ public interface ReviewService {
    boolean deleteReview(long reviewId);
 
    List<ReviewRes> addDPlusDay(List<Review> reviews);
-
-   List<Review> isCompleted(List<Review> reviews, Spec spec);
 }

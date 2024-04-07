@@ -88,7 +88,6 @@ public class ReviewServiceImpl implements ReviewService{
         Spec spec = specRepository.findById(specId).orElseThrow();
 
         List<Review> reviews = reviewRepository.findBySpecOrderByIdDesc(spec);
-        isCompleted(reviews, spec);
 
         return addDPlusDay(reviews);
     }
@@ -99,8 +98,6 @@ public class ReviewServiceImpl implements ReviewService{
         Spec spec = specRepository.findById(specId).orElseThrow();
 
         List<Review> reviews = reviewRepository.findBySpecOrderByIdAsc(spec);
-        isCompleted(reviews, spec);
-
         return addDPlusDay(reviews);
     }
 
@@ -109,7 +106,6 @@ public class ReviewServiceImpl implements ReviewService{
         Spec spec = specRepository.findById(specId).orElseThrow();
 
         List<Review> reviews = reviewRepository.findBySpecOrderByViewsDesc(spec);
-        isCompleted(reviews, spec);
 
         return addDPlusDay(reviews);
     }
@@ -161,17 +157,4 @@ public class ReviewServiceImpl implements ReviewService{
         }
         return reviewResList;
     }
-
-    @Override
-    public List<Review> isCompleted(List<Review> reviews, Spec spec) {
-        for (Review review : reviews) {
-            LocalDate currentDate = LocalDate.now();
-            boolean isCompleted = false;
-            if (review.getSpec().getEndDate().isBefore(currentDate)) {  isCompleted = true; }
-
-            spec.setCompleted(isCompleted);
-        }
-        return reviews;
-    }
 }
-
