@@ -148,11 +148,42 @@ public class SpecServiceImpl implements SpecService{
 
     @Override
     public Long updateSpec(Long specId, SpecUpdateReq specUpdateReq) {
-        return null;
+        User user = userService.getUser();
+        Spec spec = this.findSpecBySpecId(specId);
+
+        if (!user.getId().equals(spec.getUser().getId())) {
+            throw new RuntimeException("해당 스펙의 수정 권한이 없는 사용자입니다.");
+        }
+
+        spec.SpecPrivateUpdate(specUpdateReq);
+
+        Category category = spec.getCategory();
+        Detail detail = specUpdateReq.getDetail();
+
+        switch (category) {
+            case ACTIVITY:
+                Activity activity = activityRepository.findActivityBySpecId(specId);
+                activity.ActivityPrivateUpdate((ActivityDetail) detail);
+            case CERTIFICATION:
+                Certification certification = certificationRepository.findCertificationBySpecId(specId);
+                certification.certificationPrivateUpdate((CertificationDetail) detail);
+            case CONTEST:
+                Contest contest = contestRepository.findContestBySpecId(specId);
+                contest.contestPrivateUpdate((ContestDetail) detail);
+            case INTERNSHIP:
+                Internship internship = internshipRepository.findInternshipBySpecId(specId);
+                internship.internshipPrivateUpdate((InternshipDetail) detail);
+            case PROJECT:
+                Project project = projectRepository.findProjectBySpecId(specId);
+                project.projectPrivateUpdate((ProjectDetail) detail);
+        }
+
+        return spec.getId();
     }
 
     @Override
     public void deleteSpec(Long specId) {
+
         return;
     }
 
