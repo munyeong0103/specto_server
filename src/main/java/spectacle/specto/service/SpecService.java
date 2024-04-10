@@ -3,6 +3,7 @@ package spectacle.specto.service;
 import org.springframework.data.domain.Pageable;
 import spectacle.specto.domain.Spec;
 import spectacle.specto.domain.enumType.Category;
+import spectacle.specto.dto.specDto.common.Detail;
 import spectacle.specto.dto.specDto.req.SpecUpdateReq;
 import spectacle.specto.dto.specDto.res.SpecDetailRes;
 import spectacle.specto.dto.specDto.req.SpecPostReq;
@@ -17,7 +18,7 @@ public interface SpecService {
 
     List<SpecRes> getSpecByMostViewed(Category category, Pageable pageable);
 
-    SpecDetailRes getSpecDetail(Long specId, Pageable pageable);
+    SpecDetailRes<? extends Detail> getSpecDetail(Long specId);
 
     Long createSpec(SpecPostReq specPostReq);
 

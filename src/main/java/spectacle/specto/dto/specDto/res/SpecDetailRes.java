@@ -5,7 +5,7 @@ import spectacle.specto.dto.specDto.common.Detail;
 
 import java.time.LocalDate;
 
-public class SpecDetailRes {
+public class SpecDetailRes<T extends Detail> {
     private String name;
     private String category;
     private LocalDate startDate;
@@ -13,10 +13,10 @@ public class SpecDetailRes {
     private boolean completed;
     private String contents;
     private String summary;
-    private Detail detail;
+    private T detail;
 
     @Builder
-    public SpecDetailRes(String name, String category, LocalDate startDate, LocalDate endDate, boolean completed, String contents, String summary, Detail detail) {
+    public SpecDetailRes(String name, String category, LocalDate startDate, LocalDate endDate, boolean completed, String contents, String summary) {
         this.name = name;
         this.category = category;
         this.startDate = startDate;
@@ -24,6 +24,9 @@ public class SpecDetailRes {
         this.completed = completed;
         this.contents = contents;
         this.summary = summary;
+    }
+
+    public void addDetail(T detail) {
         this.detail = detail;
     }
 }

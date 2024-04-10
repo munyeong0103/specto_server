@@ -47,62 +47,11 @@ public class SpecServiceImpl implements SpecService{
     }
 
     @Override
-    public SpecDetailRes getSpecDetail(Long specId, Pageable pageable) {
+    public SpecDetailRes<? extends Detail> getSpecDetail(Long specId) {
         Spec spec = this.findSpecBySpecId(specId);
         Category category = spec.getCategory();
-        Detail detail = new Detail();
 
-        switch (category) {
-            case ACTIVITY:
-                Activity activity = activityRepository.findActivityBySpecId(specId);
-                detail = ActivityDetail.builder()
-                        .host(activity.getHost())
-                        .field(activity.getField())
-                        .motivation(activity.getMotivation())
-                        .goal(activity.getGoal())
-                        .direction(activity.getDirection())
-                        .build();
-                break;
-            case CERTIFICATION:
-                Certification certification = certificationRepository.findCertificationBySpecId(specId);
-                detail = CertificationDetail.builder()
-                        .host(certification.getHost())
-                        .field(certification.getField())
-                        .date(certification.getDate())
-                        .build();
-                break;
-            case CONTEST:
-                Contest contest = contestRepository.findContestBySpecId(specId);
-                detail = ContestDetail.builder()
-                        .host(contest.getHost())
-                        .field(contest.getField())
-                        .awardStatus(contest.getAwardStatus())
-                        .awardTitle(contest.getAwardTitle())
-                        .date(contest.getDate())
-                        .build();
-            case INTERNSHIP:
-                Internship internship = internshipRepository.findInternshipBySpecId(specId);
-                detail = InternshipDetail.builder()
-                        .company(internship.getCompany())
-                        .work(internship.getWork())
-                        .motivation(internship.getMotivation())
-                        .goal(internship.getGoal())
-                        .project(internship.getProject())
-                        .build();
-                break;
-            case PROJECT:
-                Project project = projectRepository.findProjectBySpecId(specId);
-                detail = ProjectDetail.builder()
-                        .host(project.getHost())
-                        .field(project.getField())
-                        .motivation(project.getMotivation())
-                        .goal(project.getGoal())
-                        .direction(project.getDirection())
-                        .build();
-                break;
-        }
-
-        return SpecDetailRes.builder()
+        SpecDetailRes<Detail> res = SpecDetailRes.builder()
                 .name(spec.getName())
                 .category(spec.getCategory().toString())
                 .startDate(spec.getStartDate())
@@ -110,8 +59,65 @@ public class SpecServiceImpl implements SpecService{
                 .completed(spec.isCompleted())
                 .contents(spec.getContents())
                 .summary(spec.getSummary())
-                .detail(detail)
                 .build();
+
+        switch (category) {
+            case ACTIVITY:
+                Activity activity = activityRepository.findActivityBySpecId(specId);
+                ActivityDetail activityDetail = ActivityDetail.builder()
+                        .host(activity.getHost())
+                        .field(activity.getField())
+                        .motivation(activity.getMotivation())
+                        .goal(activity.getGoal())
+                        .direction(activity.getDirection())
+                        .build();
+                res.addDetail(activityDetail);
+                break;
+            case CERTIFICATION:
+                Certification certification = certificationRepository.findCertificationBySpecId(specId);
+                CertificationDetail certificationDetail = CertificationDetail.builder()
+                        .host(certification.getHost())
+                        .field(certification.getField())
+                        .date(certification.getDate())
+                        .build();
+                res.addDetail(certificationDetail);
+                break;
+            case CONTEST:
+                Contest contest = contestRepository.findContestBySpecId(specId);
+                ContestDetail contestDetail = ContestDetail.builder()
+                        .host(contest.getHost())
+                        .field(contest.getField())
+                        .awardStatus(contest.getAwardStatus())
+                        .awardTitle(contest.getAwardTitle())
+                        .date(contest.getDate())
+                        .build();
+                res.addDetail(contestDetail);
+                break;
+            case INTERNSHIP:
+                Internship internship = internshipRepository.findInternshipBySpecId(specId);
+                InternshipDetail internshipDetail = InternshipDetail.builder()
+                        .company(internship.getCompany())
+                        .work(internship.getWork())
+                        .motivation(internship.getMotivation())
+                        .goal(internship.getGoal())
+                        .project(internship.getProject())
+                        .build();
+                res.addDetail(internshipDetail);
+                break;
+            case PROJECT:
+                Project project = projectRepository.findProjectBySpecId(specId);
+                ProjectDetail projectDetail = ProjectDetail.builder()
+                        .host(project.getHost())
+                        .field(project.getField())
+                        .motivation(project.getMotivation())
+                        .goal(project.getGoal())
+                        .direction(project.getDirection())
+                        .build();
+                res.addDetail(projectDetail);
+                break;
+        }
+
+        return res;
 
     }
 
