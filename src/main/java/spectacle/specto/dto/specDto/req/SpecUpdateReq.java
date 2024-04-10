@@ -9,7 +9,6 @@ import java.time.LocalDate;
 
 @Getter
 public class SpecUpdateReq {
-    private Long specId;
     private String name;
     private LocalDate startDate;
     private LocalDate endDate;
