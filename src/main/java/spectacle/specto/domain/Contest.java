@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import spectacle.specto.domain.enumType.Field;
 import spectacle.specto.dto.specDto.common.ContestDetail;
+import spectacle.specto.dto.specDto.common.Detail;
 
 import java.time.LocalDate;
 
@@ -46,7 +47,7 @@ public class Contest {
         this.date = date;
     }
 
-    public void contestPrivateUpdate(ContestDetail detail) {
+    public void contestPrivateUpdate(Detail detail) {
         this.host = detail.getHost();
         this.field = detail.getField();
         this.awardStatus = detail.isAwardStatus();

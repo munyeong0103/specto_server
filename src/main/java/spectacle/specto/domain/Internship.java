@@ -2,6 +2,7 @@ package spectacle.specto.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import spectacle.specto.dto.specDto.common.Detail;
 import spectacle.specto.dto.specDto.common.InternshipDetail;
 
 @Entity
@@ -43,7 +44,7 @@ public class Internship {
         this.project = project;
     }
 
-    public void internshipPrivateUpdate(InternshipDetail detail) {
+    public void internshipPrivateUpdate(Detail detail) {
         this.company = detail.getCompany();
         this.work = detail.getWork();
         this.motivation = detail.getMotivation();

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import spectacle.specto.domain.enumType.Field;
 import spectacle.specto.dto.specDto.common.ActivityDetail;
+import spectacle.specto.dto.specDto.common.Detail;
 
 @Entity
 @Table(name = "activity")
@@ -44,7 +45,7 @@ public class Activity {
         this.direction = direction;
     }
 
-    public void ActivityPrivateUpdate(ActivityDetail detail) {
+    public void ActivityPrivateUpdate(Detail detail) {
         this.host = detail.getHost();
         this.field = detail.getField();
         this.motivation = detail.getMotivation();

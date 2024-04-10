@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import spectacle.specto.domain.enumType.Field;
 import spectacle.specto.dto.specDto.common.CertificationDetail;
+import spectacle.specto.dto.specDto.common.Detail;
 
 import java.time.LocalDate;
 
@@ -40,7 +41,7 @@ public class Certification {
         this.date = date;
     }
 
-    public void certificationPrivateUpdate(CertificationDetail detail) {
+    public void certificationPrivateUpdate(Detail detail) {
         this.host = detail.getHost();
         this.field = detail.getField();
         this.date = detail.getDate();

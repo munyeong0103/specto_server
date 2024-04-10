@@ -3,6 +3,7 @@ package spectacle.specto.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import spectacle.specto.domain.enumType.Field;
+import spectacle.specto.dto.specDto.common.Detail;
 import spectacle.specto.dto.specDto.common.ProjectDetail;
 
 @Entity
@@ -44,7 +45,7 @@ public class Project {
         this.direction = direction;
     }
 
-    public void projectPrivateUpdate(ProjectDetail detail) {
+    public void projectPrivateUpdate(Detail detail) {
         this.host = detail.getHost();
         this.field = detail.getField();
         this.motivation = detail.getMotivation();
