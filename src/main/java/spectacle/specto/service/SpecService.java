@@ -1,6 +1,7 @@
 package spectacle.specto.service;
 
 import org.springframework.data.domain.Pageable;
+import spectacle.specto.domain.Spec;
 import spectacle.specto.domain.enumType.Category;
 import spectacle.specto.dto.specDto.req.SpecUpdateReq;
 import spectacle.specto.dto.specDto.res.SpecDetailRes;
@@ -23,4 +24,6 @@ public interface SpecService {
     Long updateSpec(Long specId, SpecUpdateReq specUpdateReq);
 
     void deleteSpec(Long specId);
+
+    void setSpecCompleted(Spec spec);
 }

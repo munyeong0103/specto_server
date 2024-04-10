@@ -3,6 +3,7 @@ package spectacle.specto.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import spectacle.specto.domain.*;
 import spectacle.specto.domain.enumType.Category;
 import spectacle.specto.dto.specDto.common.*;
@@ -11,6 +12,7 @@ import spectacle.specto.dto.specDto.res.SpecDetailRes;
 import spectacle.specto.dto.specDto.res.SpecRes;
 import spectacle.specto.repository.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -113,6 +115,7 @@ public class SpecServiceImpl implements SpecService{
 
     }
 
+    @Transactional
     @Override
     public Long createSpec(SpecPostReq specPostReq) {
         User user = userService.getUser();
@@ -120,6 +123,7 @@ public class SpecServiceImpl implements SpecService{
         Spec spec = specPostReq.toEntity();
         spec.setUser(user);
         Spec newSpec = specRepository.save(spec);
+        this.setSpecCompleted(newSpec);
 
         Category category = specPostReq.getCategory();
         Detail detail = specPostReq.getDetail();
@@ -155,6 +159,7 @@ public class SpecServiceImpl implements SpecService{
         return newSpec.getId();
     }
 
+    @Transactional
     @Override
     public Long updateSpec(Long specId, SpecUpdateReq specUpdateReq) {
         User user = userService.getUser();
@@ -165,6 +170,7 @@ public class SpecServiceImpl implements SpecService{
         }
 
         spec.SpecPrivateUpdate(specUpdateReq);
+        this.setSpecCompleted(spec);
 
         Category category = spec.getCategory();
         Detail detail = specUpdateReq.getDetail();
@@ -172,29 +178,30 @@ public class SpecServiceImpl implements SpecService{
         switch (category) {
             case ACTIVITY:
                 Activity activity = activityRepository.findActivityBySpecId(specId);
-                activity.ActivityPrivateUpdate((ActivityDetail) detail);
+                activity.ActivityPrivateUpdate(detail);
                 break;
             case CERTIFICATION:
                 Certification certification = certificationRepository.findCertificationBySpecId(specId);
-                certification.certificationPrivateUpdate((CertificationDetail) detail);
+                certification.certificationPrivateUpdate(detail);
                 break;
             case CONTEST:
                 Contest contest = contestRepository.findContestBySpecId(specId);
-                contest.contestPrivateUpdate((ContestDetail) detail);
+                contest.contestPrivateUpdate(detail);
                 break;
             case INTERNSHIP:
                 Internship internship = internshipRepository.findInternshipBySpecId(specId);
-                internship.internshipPrivateUpdate((InternshipDetail) detail);
+                internship.internshipPrivateUpdate(detail);
                 break;
             case PROJECT:
                 Project project = projectRepository.findProjectBySpecId(specId);
-                project.projectPrivateUpdate((ProjectDetail) detail);
+                project.projectPrivateUpdate(detail);
                 break;
         }
 
         return spec.getId();
     }
 
+    @Transactional
     @Override
     public void deleteSpec(Long specId) {
         User user = userService.getUser();
@@ -225,6 +232,11 @@ public class SpecServiceImpl implements SpecService{
         }
 
         specRepository.deleteById(specId);
+    }
+
+    @Override
+    public void setSpecCompleted(Spec spec) {
+        spec.SpecUpdateCompleted(LocalDate.now().isAfter(spec.getEndDate()));
     }
 
     private SpecRes specToSpecRes(Spec spec) {

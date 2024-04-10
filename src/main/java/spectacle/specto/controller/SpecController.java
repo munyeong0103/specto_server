@@ -57,7 +57,7 @@ public class SpecController {
     }
 
     // 스펙 수정
-    @PutMapping("{specId}")
+    @PatchMapping("{specId}")
     public ResponseEntity<?> updateSpecInfo(@PathVariable Long specId ,@RequestBody SpecUpdateReq specUpdateReq) {
         Long id = specService.updateSpec(specId, specUpdateReq);
         return ResponseEntity.ok("spec " + id + "수정 성공");

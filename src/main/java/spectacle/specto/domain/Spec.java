@@ -82,4 +82,8 @@ public class Spec {
         this.endDate = dto.getEndDate();
         this.contents = dto.getContents();
     }
+
+    public void SpecUpdateCompleted(boolean isCompleted) {
+        this.completed = isCompleted;
+    }
 }
