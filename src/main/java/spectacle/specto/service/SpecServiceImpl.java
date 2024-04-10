@@ -60,6 +60,7 @@ public class SpecServiceImpl implements SpecService{
                         .goal(activity.getGoal())
                         .direction(activity.getDirection())
                         .build();
+                break;
             case CERTIFICATION:
                 Certification certification = certificationRepository.findCertificationBySpecId(specId);
                 detail = CertificationDetail.builder()
@@ -67,6 +68,7 @@ public class SpecServiceImpl implements SpecService{
                         .field(certification.getField())
                         .date(certification.getDate())
                         .build();
+                break;
             case CONTEST:
                 Contest contest = contestRepository.findContestBySpecId(specId);
                 detail = ContestDetail.builder()
@@ -85,6 +87,7 @@ public class SpecServiceImpl implements SpecService{
                         .goal(internship.getGoal())
                         .project(internship.getProject())
                         .build();
+                break;
             case PROJECT:
                 Project project = projectRepository.findProjectBySpecId(specId);
                 detail = ProjectDetail.builder()
@@ -94,6 +97,7 @@ public class SpecServiceImpl implements SpecService{
                         .goal(project.getGoal())
                         .direction(project.getDirection())
                         .build();
+                break;
         }
 
         return SpecDetailRes.builder()
@@ -122,25 +126,30 @@ public class SpecServiceImpl implements SpecService{
 
         switch (category) {
             case ACTIVITY:
-                Activity activity = ((ActivityDetail) detail).toEntity();
+                Activity activity = detail.toActivity();
                 activity.setSpec(newSpec);
                 activityRepository.save(activity);
+                break;
             case CERTIFICATION:
-                Certification certification = ((CertificationDetail) detail).toEntity();
+                Certification certification = detail.toCertification();
                 certification.setSpec(newSpec);
                 certificationRepository.save(certification);
+                break;
             case CONTEST:
-                Contest contest = ((ContestDetail) detail).toEntity();
+                Contest contest = detail.toContest();
                 contest.setSpec(newSpec);
                 contestRepository.save(contest);
+                break;
             case INTERNSHIP:
-                Internship internship = ((InternshipDetail) detail).toEntity();
+                Internship internship = detail.toInternship();
                 internship.setSpec(newSpec);
                 internshipRepository.save(internship);
+                break;
             case PROJECT:
-                Project project = ((ProjectDetail) detail).toEntity();
+                Project project = detail.toProject();
                 project.setSpec(newSpec);
                 projectRepository.save(project);
+                break;
         }
 
         return newSpec.getId();
@@ -164,18 +173,23 @@ public class SpecServiceImpl implements SpecService{
             case ACTIVITY:
                 Activity activity = activityRepository.findActivityBySpecId(specId);
                 activity.ActivityPrivateUpdate((ActivityDetail) detail);
+                break;
             case CERTIFICATION:
                 Certification certification = certificationRepository.findCertificationBySpecId(specId);
                 certification.certificationPrivateUpdate((CertificationDetail) detail);
+                break;
             case CONTEST:
                 Contest contest = contestRepository.findContestBySpecId(specId);
                 contest.contestPrivateUpdate((ContestDetail) detail);
+                break;
             case INTERNSHIP:
                 Internship internship = internshipRepository.findInternshipBySpecId(specId);
                 internship.internshipPrivateUpdate((InternshipDetail) detail);
+                break;
             case PROJECT:
                 Project project = projectRepository.findProjectBySpecId(specId);
                 project.projectPrivateUpdate((ProjectDetail) detail);
+                break;
         }
 
         return spec.getId();
@@ -195,14 +209,19 @@ public class SpecServiceImpl implements SpecService{
         switch (category) {
             case ACTIVITY:
                 activityRepository.delete(activityRepository.findActivityBySpecId(specId));
+                break;
             case CERTIFICATION:
                 certificationRepository.delete(certificationRepository.findCertificationBySpecId(specId));
+                break;
             case CONTEST:
                 contestRepository.delete(contestRepository.findContestBySpecId(specId));
+                break;
             case INTERNSHIP:
                 internshipRepository.delete(internshipRepository.findInternshipBySpecId(specId));
+                break;
             case PROJECT:
                 projectRepository.delete(projectRepository.findProjectBySpecId(specId));
+                break;
         }
 
         specRepository.deleteById(specId);
