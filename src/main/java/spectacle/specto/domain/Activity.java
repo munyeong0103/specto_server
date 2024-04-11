@@ -22,7 +22,7 @@ public class Activity {
     private Field field;
 
     @Lob
-    @Column(nullable = false, length = 1000)
+    @Column(nullable = true, length = 1000)
     private byte[] documentation;
 
     private String motivation;

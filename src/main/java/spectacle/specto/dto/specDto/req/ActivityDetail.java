@@ -12,6 +12,7 @@ public class ActivityDetail extends Detail {
     private String motivation;
     private String goal;
     private String direction;
+    private byte[] documentation;
 
     public Activity toEntity() {
         return Activity.builder()
@@ -20,7 +21,7 @@ public class ActivityDetail extends Detail {
                 .motivation(motivation)
                 .goal(goal)
                 .direction(direction)
-                .documentation(super.getDocumentation())
+                .documentation(documentation)
                 .build();
     }
 }

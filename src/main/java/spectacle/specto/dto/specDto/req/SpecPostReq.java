@@ -13,7 +13,7 @@ public class SpecPostReq {
     LocalDate startDate;
     LocalDate endDate;
     String contents;
-    Detail detail;
+    ActivityDetail detail;
 
     public Spec toEntity() {
         return Spec.builder()

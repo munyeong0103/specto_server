@@ -17,5 +17,5 @@ public interface SpecService {
 
     SpecDetailRes getSpecDetail(Long specId, Category category, Pageable pageable);
 
-    Long createSpec(SpecPostReq specPostReq);
+    Long createSpec(String userId, SpecPostReq specPostReq);
 }
