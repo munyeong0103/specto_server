@@ -27,6 +27,7 @@ public class JwtTokenUtil {
                 .compact();
 
         String refreshToken = Jwts.builder()
+                .setClaims(claims)
                 .setExpiration(new Date(System.currentTimeMillis() + REFRESH_TOKEN_EXPIRE_TIME))
                 .signWith(SignatureAlgorithm.HS256, key)
                 .compact();
