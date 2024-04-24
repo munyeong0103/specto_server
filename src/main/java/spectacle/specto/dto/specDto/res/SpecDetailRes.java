@@ -1,10 +1,12 @@
 package spectacle.specto.dto.specDto.res;
 
 import lombok.Builder;
+import lombok.Getter;
 import spectacle.specto.dto.specDto.common.Detail;
 
 import java.time.LocalDate;
 
+@Getter
 public class SpecDetailRes<T extends Detail> {
     private String name;
     private String category;
