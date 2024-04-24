@@ -57,6 +57,7 @@ public class Detail {
         return Internship.builder()
                 .company(company)
                 .work(work)
+                .motivation(motivation)
                 .goal(goal)
                 .project(project)
                 .documentation(documentation)
