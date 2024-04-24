@@ -8,9 +8,8 @@ import spectacle.specto.dto.specDto.common.Detail;
 import java.time.LocalDate;
 
 @Getter
-public class SpecPostReq {
+public class SpecUpdateReq {
     private String name;
-    private Category category;
     private LocalDate startDate;
     private LocalDate endDate;
     private String contents;
@@ -19,7 +18,6 @@ public class SpecPostReq {
     public Spec toEntity() {
         return Spec.builder()
                 .name(name)
-                .category(category)
                 .startDate(startDate)
                 .endDate(endDate)
                 .contents(contents)

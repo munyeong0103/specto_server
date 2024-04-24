@@ -3,6 +3,9 @@ package spectacle.specto.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import spectacle.specto.domain.User;
 import spectacle.specto.dto.loginDto.JwtDto;
@@ -36,9 +39,13 @@ public class UserService {
         }
     }
 
-    public JwtDto issueRefreshToken(String refreshToken) {
-        String email = JwtTokenUtil.getUserEmail(refreshToken, secretKey);
-        return JwtTokenUtil.createToken(email, secretKey);
+    public User getUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = (String) authentication.getCredentials(); //email
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("USER_NOT_FOUND"));
+        return user;
     }
 
 }

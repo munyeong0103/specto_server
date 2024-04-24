@@ -6,4 +6,5 @@ import spectacle.specto.domain.Contest;
 
 @Repository
 public interface ContestRepository extends JpaRepository<Contest, Long> {
+    Contest findContestBySpecId(Long specId);
 }

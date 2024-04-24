@@ -3,6 +3,8 @@ package spectacle.specto.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import spectacle.specto.domain.enumType.Field;
+import spectacle.specto.dto.specDto.common.ContestDetail;
+import spectacle.specto.dto.specDto.common.Detail;
 
 import java.time.LocalDate;
 
@@ -23,9 +25,7 @@ public class Contest {
     @Column(nullable = false)
     private Field field;
 
-    @Lob
-    @Column(length = 1000)
-    private byte[] documentation;
+    private String documentation;
 
     private Boolean awardStatus;
 
@@ -38,12 +38,20 @@ public class Contest {
     private Spec spec;
 
     @Builder
-    public Contest(String host, Field field, byte[] documentation, Boolean awardStatus, String awardTitle, LocalDate date) {
+    public Contest(String host, Field field, String documentation, Boolean awardStatus, String awardTitle, LocalDate date) {
         this.host = host;
         this.field = field;
         this.documentation = documentation;
         this.awardStatus = awardStatus;
         this.awardTitle = awardTitle;
         this.date = date;
+    }
+
+    public void contestPrivateUpdate(Detail detail) {
+        this.host = detail.getHost();
+        this.field = detail.getField();
+        this.awardStatus = detail.isAwardStatus();
+        this.awardTitle = detail.getAwardTitle();
+        this.date = detail.getDate();
     }
 }

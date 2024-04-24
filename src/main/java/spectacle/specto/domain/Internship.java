@@ -2,6 +2,8 @@ package spectacle.specto.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import spectacle.specto.dto.specDto.common.Detail;
+import spectacle.specto.dto.specDto.common.InternshipDetail;
 
 @Entity
 @Table(name = "internship")
@@ -20,9 +22,7 @@ public class Internship {
     @Column(nullable = false)
     private String work;
 
-    @Lob
-    @Column(length = 1000)
-    private byte[] documentation;
+    private String documentation;
 
     private String motivation;
 
@@ -35,12 +35,20 @@ public class Internship {
     private Spec spec;
 
     @Builder
-    public Internship(String company, String work, byte[] documentation, String motivation, String goal, String project) {
+    public Internship(String company, String work, String documentation, String motivation, String goal, String project) {
         this.company = company;
         this.work = work;
         this.documentation = documentation;
         this.motivation = motivation;
         this.goal = goal;
         this.project = project;
+    }
+
+    public void internshipPrivateUpdate(Detail detail) {
+        this.company = detail.getCompany();
+        this.work = detail.getWork();
+        this.motivation = detail.getMotivation();
+        this.goal = detail.getGoal();
+        this.project = detail.getProject();
     }
 }

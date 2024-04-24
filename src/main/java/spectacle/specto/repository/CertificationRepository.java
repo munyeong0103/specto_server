@@ -6,4 +6,5 @@ import spectacle.specto.domain.Certification;
 
 @Repository
 public interface CertificationRepository extends JpaRepository<Certification, Long> {
+    Certification findCertificationBySpecId(Long specId);
 }
