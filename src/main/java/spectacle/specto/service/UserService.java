@@ -48,4 +48,9 @@ public class UserService {
         return user;
     }
 
+    public JwtDto issueRefreshToken(String refreshToken) {
+        String email = JwtTokenUtil.getUserEmail(refreshToken, secretKey);
+        return JwtTokenUtil.createToken(email, secretKey);
+    }
+
 }
