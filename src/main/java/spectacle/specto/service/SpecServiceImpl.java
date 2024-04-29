@@ -1,6 +1,7 @@
 package spectacle.specto.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +14,6 @@ import spectacle.specto.dto.specDto.res.SpecRes;
 import spectacle.specto.repository.*;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -29,21 +29,8 @@ public class SpecServiceImpl implements SpecService{
     private final UserService userService;
 
     @Override
-    public List<SpecRes> getSpecByRecent(Category category, Pageable pageable) {
-        List<Spec> specList = specRepository.findByCategoryOrderByStartDateDesc(category, pageable);
-        return specList.stream().map(this::specToSpecRes).toList();
-    }
-
-    @Override
-    public List<SpecRes> getSpecByOldest(Category category, Pageable pageable) {
-        List<Spec> specList = specRepository.findByCategoryOrderByStartDateAsc(category, pageable);
-        return specList.stream().map(this::specToSpecRes).toList();
-    }
-
-    @Override
-    public List<SpecRes> getSpecByMostViewed(Category category, Pageable pageable) {
-        List<Spec> specList = specRepository.findSpecByMostViewed(category, pageable);
-        return specList.stream().map(this::specToSpecRes).toList();
+    public Page<SpecRes> getSpecList(Category category, String sortType, Pageable pageable) {
+        return specRepository.selectSpecList(category, sortType, pageable);
     }
 
     @Override
@@ -249,7 +236,7 @@ public class SpecServiceImpl implements SpecService{
         return SpecRes.builder()
                 .specId(spec.getId())
                 .name(spec.getName())
-                .category(spec.getCategory().toString())
+                .category(spec.getCategory())
                 .startDate(spec.getStartDate())
                 .endDate(spec.getEndDate())
                 .completed(spec.isCompleted())
